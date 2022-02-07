@@ -1,4 +1,4 @@
-# vue-food
+# <p align="center"> <b><i> VUE FOOD </i></b> </p> 
 
 ## Project setup
 ```
@@ -14,11 +14,3 @@ npm run serve
 ```
 npm run build
 ```
-
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
