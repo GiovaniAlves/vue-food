@@ -8,7 +8,7 @@
 
                <div class="col-lg-4 col-md-4 col-6 mb-4" v-for="(company, index) in companies.data" :key="index">
                   <div class="restaurant-card">
-                     <a class="logo" href="#">
+                     <a class="logo" href="#" @click.prevent="goToStore(company)">
                         <img
                            v-if="company.logo"
                            class="card-img-top"
@@ -22,7 +22,7 @@
                      </a>
                      <div class="restaurant-card-body">
                         <h3>
-                           <router-link :to="{name: 'products'}">{{ company.name }}</router-link>
+                           <a href="#" @click.prevent="goToStore(company)"> {{ company.name }} </a>
                         </h3>
                      </div>
                   </div>
@@ -38,22 +38,34 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapActions, mapMutations, mapState } from 'vuex'
 
 export default {
    name: 'Home',
-   mounted () {
-      this.getCompanies()
-   },
    computed: {
-      companies () {
-         return this.$store.state.companies.items
-      }
+      ...mapState({
+         companies: state => state.companies.items
+      })
+   },
+   created () {
+      this.getCompanies()
+         .catch(() => this.$vToastify.error('Falha ao carregar as empresas', 'Erro'))
    },
    methods: {
       ...mapActions([
          'getCompanies'
-      ])
+      ]),
+      ...mapMutations({
+         setCompany: 'SET_COMPANY_SELECTED'
+      }),
+      goToStore (company) {
+         this.setCompany(company)
+
+         this.$router.push({
+            name: 'products',
+            params: { companyUrl: company.flag }
+         })
+      }
    }
 }
 </script>

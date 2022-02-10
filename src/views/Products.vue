@@ -1,149 +1,66 @@
 <template>
    <div class="products">
       <!-- About Tenant and Categories -->
-      <h1 class="my-4 title-tenant text-center">Nome do Tenant</h1>
+      <h1 class="my-4 title-tenant text-center">{{ company.name }}</h1>
       <div class="row">
 
          <div class="list-categories">
-            <a href="#" class="list-categories__item active">
-               <div class="icon"><i class="fas fa-pizza-slice"></i></div>
-               <span> Pizza </span> </a>
-            <a href="#" class="list-categories__item active">
-               <div class="icon"><i class="fas fa-hamburger"></i></div>
-               <span> Sanduiche </span> </a>
-            <a href="#" class="list-categories__item active">
-               <div class="icon"><i class="fas fa-ice-cream"></i></div>
-               <span> Sorvetes </span> </a>
+            <a
+               @click.prevent="filterByCategory('')"
+               class="list-categories__item"
+               :style=" categoryInFilter('') "
+               href="#"
+            >
+               <div class="icon"><i class="fas fa-utensils"></i></div>
+               <span> Todas </span>
+            </a>
+            <a
+               v-for="(category, index) in company.categories.data" :key="index"
+               @click.prevent="filterByCategory(category.identify)"
+               :style=" categoryInFilter(category.identify) "
+               class="list-categories__item"
+               href="#"
+            >
+               <div class="icon"><i class="fas fa-utensils"></i></div>
+               <span> {{ category.name }} </span>
+            </a>
          </div>
 
       </div>
       <!-- Cards Produtos -->
       <div class="row my-4">
 
-         <div class="col-lg-4 col-md-6 mb-4">
+         <div v-if="productsCompany.data.length === 0">
+            Nenhum produto
+         </div>
+
+         <div class="col-lg-4 col-md-6 mb-4" v-for="(product, index) in productsCompany.data" :key="index">
             <div class="card--flat h-100">
                <a href="#">
                   <div class="card-image">
-                     <img class="card-img-top" src="imgs/pizza.png" alt="">
+                     <img
+                        v-if="product.image"
+                        class="card-img-top"
+                        :src="product.image"
+                        alt="">
+                     <img
+                        v-else
+                        class="card-img-top"
+                        src="@/assets/imgs/pizza.png"
+                        alt="">
                   </div>
                </a>
                <div class="card-body">
                   <h4 class="card-title">
-                     <a href="#">Pizza</a>
+                     <a href="#">{{ product.title }}</a>
                   </h4>
-                  <h5>R$ 12,99</h5>
-                  <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Amet numquam
-                     aspernatur!</p>
+                  <h5>R$ {{ product.price }}</h5>
+                  <p class="card-text">{{ product.description }}</p>
                </div>
                <div class="card-footer card-footer-custom">
                   <router-link :to="{name: 'cart'}">
                      Adicionar no Carrinho <i class="fas fa-cart-plus"></i>
                   </router-link>
-               </div>
-            </div>
-         </div>
-
-         <div class="col-lg-4 col-md-6 mb-4">
-            <div class="card--flat h-100">
-               <a href="#">
-                  <div class="card-image">
-                     <img class="card-img-top" src="imgs/acai.png" alt="">
-                  </div>
-               </a>
-               <div class="card-body">
-                  <h4 class="card-title">
-                     <a href="#">Açai na Tijela</a>
-                  </h4>
-                  <h5>R$ 12,99</h5>
-                  <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Amet numquam
-                     aspernatur! Lorem ipsum dolor sit amet.</p>
-               </div>
-               <div class="card-footer card-footer-custom">
-                  <a href="carrinho.html">Adicionar no Carrinho <i class="fas fa-cart-plus"></i></a>
-               </div>
-            </div>
-         </div>
-
-         <div class="col-lg-4 col-md-6 mb-4">
-            <div class="disabled card--flat h-100">
-               <a href="#">
-                  <div class="card-image">
-                     <img class="card-img-top" src="imgs/lanches.png" alt="">
-                  </div>
-               </a>
-               <div class="card-body">
-                  <h4 class="card-title">
-                     <a href="#">Sanduiche</a>
-                  </h4>
-                  <h5>R$ 12,99</h5>
-                  <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Amet numquam
-                     aspernatur! Lorem ipsum dolor sit amet.</p>
-               </div>
-               <div class="card-footer card-footer-custom">
-                  <a href="carrinho.html">Adicionar no Carrinho <i class="fas fa-cart-plus"></i></a>
-               </div>
-            </div>
-         </div>
-
-         <div class="col-lg-4 col-md-6 mb-4">
-            <div class="card--flat h-100">
-               <a href="#">
-                  <div class="card-image">
-                     <img class="card-img-top" src="imgs/pizza.png" alt="">
-                  </div>
-               </a>
-               <div class="card-body">
-                  <h4 class="card-title">
-                     <a href="#">Pizza</a>
-                  </h4>
-                  <h5>R$ 12,99</h5>
-                  <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Amet numquam
-                     aspernatur! Lorem ipsum dolor sit amet.</p>
-               </div>
-               <div class="card-footer card-footer-custom">
-                  <a href="carrinho.html">Adicionar no Carrinho <i class="fas fa-cart-plus"></i></a>
-               </div>
-            </div>
-         </div>
-
-         <div class="col-lg-4 col-md-6 mb-4">
-            <div class="card--flat h-100">
-               <a href="#">
-                  <div class="card-image">
-                     <img class="card-img-top" src="imgs/japonesa.png" alt="">
-                  </div>
-               </a>
-               <div class="card-body">
-                  <h4 class="card-title">
-                     <a href="#">Japonesa</a>
-                  </h4>
-                  <h5>R$ 12,99</h5>
-                  <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Amet numquam
-                     aspernatur! Lorem ipsum dolor sit amet.</p>
-               </div>
-               <div class="card-footer card-footer-custom">
-                  <a href="carrinho.html">Adicionar no Carrinho <i class="fas fa-cart-plus"></i></a>
-               </div>
-            </div>
-         </div>
-
-         <div class="col-lg-4 col-md-6 mb-4">
-            <div class="card--flat h-100">
-               <a href="#">
-                  <div class="card-image">
-                     <img class="card-img-top" src="imgs/acai.png" alt="">
-                  </div>
-               </a>
-               <div class="card-body">
-                  <h4 class="card-title">
-                     <a href="#">Açai na Tijela</a>
-                  </h4>
-                  <h5>R$ 12,99</h5>
-                  <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Amet numquam
-                     aspernatur! Lorem ipsum dolor sit amet.</p>
-               </div>
-               <div class="card-footer card-footer-custom">
-                  <a href="carrinho.html">Adicionar no Carrinho <i class="fas fa-cart-plus"></i></a>
                </div>
             </div>
          </div>
@@ -154,8 +71,61 @@
 </template>
 
 <script>
+import { mapActions, mapState } from 'vuex'
+
 export default {
-   name: 'Products'
+   name: 'Products',
+   data () {
+      return {
+         filters: {
+            categories: ''
+         }
+      }
+   },
+   computed: {
+      ...mapState({
+         company: state => state.companies.companySelected,
+         productsCompany: state => state.companies.productsInCompanySelected
+      })
+   },
+   created () {
+      if (this.company.name === '') {
+         return this.$router.push({ name: 'home' })
+      }
+
+      this.getCategoriesByCompany(this.company.uuid)
+         .catch(() => this.$vToastify.error('Falha ao carregar as categorias', 'Erro'))
+
+      this.loadProducts()
+   },
+   methods: {
+      ...mapActions([
+         'getCategoriesByCompany',
+         'getProductsByCompany'
+      ]),
+      categoryInFilter (identify) {
+         return identify === this.filters.categories ? { background: '#fbd560' } : ''
+      },
+      filterByCategory (identify) {
+         this.filters.categories = identify
+
+         this.loadProducts()
+      },
+      loadProducts () {
+         const params = {
+            token_company: this.company.uuid
+         }
+
+         if (this.filters.categories) {
+            params.categories = [
+               this.filters.categories
+            ]
+         }
+
+         this.getProductsByCompany(params)
+            .catch(() => this.$vToastify.error('Falha ao carregar os produtos', 'Erro'))
+      }
+   }
 }
 </script>
 

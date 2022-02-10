@@ -3,6 +3,7 @@ import DefaultTemplate from './layouts/Default'
 import router from './router'
 import store from './store'
 require('./bootstrap')
+require('./plugins')
 
 Vue.config.productionTip = false
 

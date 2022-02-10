@@ -24,7 +24,7 @@ const routes = [
             component: Cart
          },
          {
-            path: '/loja',
+            path: '/loja/:companyUrl',
             name: 'products',
             component: Products
          }

@@ -3,7 +3,7 @@
       <HeaderComponent />
 
       <!-- Page Content -->
-      <div class="container container-body">
+      <div class="container container-body mt-3">
          <router-view/>
       </div>
 

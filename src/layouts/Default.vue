@@ -1,5 +1,6 @@
 <template>
    <div id="app">
+      <Preloader/>
       <router-view />
    </div>
 </template>
@@ -7,9 +8,11 @@
 <script>
 import 'bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css'
+import Preloader from '@/components/Preloader'
 
 export default {
-   name: 'Default'
+   name: 'Default',
+   components: { Preloader }
 }
 </script>
 
