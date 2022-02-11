@@ -14,29 +14,57 @@
                      <div class="input-group-append">
                         <span class="input-group-text"><i class="fas fa-user"></i></span>
                      </div>
-                     <input type="text" name="" class="form-control input_user" value="" placeholder="Nome">
+                     <input
+                        v-model="user.name"
+                        type="text"
+                        name=""
+                        class="form-control input_user"
+                        value=""
+                        placeholder="Nome">
                   </div>
                   <div class="input-group">
                      <div class="input-group-append">
                         <span class="input-group-text"><i class="fas fa-envelope"></i></span>
                      </div>
-                     <input type="text" name="" class="form-control input_user" value="" placeholder="E-mail">
+                     <input
+                        v-model="user.email"
+                        type="text"
+                        name=""
+                        class="form-control input_user"
+                        value=""
+                        placeholder="E-mail">
                   </div>
                   <div class="input-group">
                      <div class="input-group-append">
                         <span class="input-group-text"><i class="fas fa-key"></i></span>
                      </div>
-                     <input type="password" name="" class="form-control input_pass" value="" placeholder="Senha">
+                     <input
+                        v-model="user.password"
+                        type="password"
+                        name=""
+                        class="form-control input_pass"
+                        value=""
+                        placeholder="Senha">
                   </div>
                   <div class="d-flex justify-content-center login_container">
-                     <button type="button" name="button" class="btn login_btn">Cadastrar</button>
+                     <button
+                        @click="registerUser"
+                        :disabled="loading"
+                        type="button"
+                        name="button"
+                        class="btn login_btn"
+                     >
+                        <span v-if="loading">Cadastrando...</span>
+                        <span v-else>Cadastrar</span>
+                     </button>
                   </div>
                </form>
             </div>
 
             <div class="mt-4">
                <div class="d-flex justify-content-center links">
-                  Já tem conta? <router-link :to="{name: 'login'}"> Login</router-link>
+                  Já tem conta?
+                  <router-link :to="{name: 'login'}"> Login</router-link>
                </div>
             </div>
          </div>
@@ -46,8 +74,34 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
+
 export default {
-   name: 'Register'
+   name: 'Register',
+   data () {
+      return {
+         user: {
+            name: '',
+            email: '',
+            password: ''
+         },
+         loading: false
+      }
+   },
+   methods: {
+      ...mapActions([
+         'register'
+      ]),
+      registerUser () {
+         this.loading = true
+
+         this.register(this.user)
+            .then(response => console.log(response.data))
+            .catch(() => this.$vToastify.error('Falha ao carregar as empresas', 'Erro'))
+            // eslint-disable-next-line no-return-assign
+            .finally(() => this.loading = false)
+      }
+   }
 }
 </script>
 

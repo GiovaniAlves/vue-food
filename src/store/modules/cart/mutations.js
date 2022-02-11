@@ -35,7 +35,7 @@ export default {
    },
    DECREMENT_QTY_PRODUCT_CART (state, product) {
       // Array.filter, como o próprio nome já sugere, serve para filtrar itens de um array.
-      // Quando chegar a zero não vai retornar o produto logo ele vai ser retirado do arry
+      // Quando chegar a zero não vai retornar o produto logo ele vai ser retirado do array
       state.products = state.products.filter((prodCart, index) => {
          if (prodCart.identify === product.identify) {
             state.products[index].qty--
