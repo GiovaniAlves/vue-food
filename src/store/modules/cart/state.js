@@ -1,5 +1,5 @@
-export default {
-   state: {
-      products: []
-   }
+const state = {
+   products: []
 }
+
+export default state

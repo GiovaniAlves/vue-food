@@ -35,7 +35,9 @@
          </div>
 
          <div class="col-lg-4 col-md-6 mb-4" v-for="(product, index) in productsCompany.data" :key="index">
-            <div class="card--flat h-100">
+            <div
+               :class="['card--flat', 'h-100', {'disabled': productInCart(product)}]"
+            >
                <a href="#">
                   <div class="card-image">
                      <img
@@ -58,9 +60,9 @@
                   <p class="card-text">{{ product.description }}</p>
                </div>
                <div class="card-footer card-footer-custom">
-                  <router-link :to="{name: 'cart'}">
+                  <a href="#" @click.prevent="addProductsCart(product)">
                      Adicionar no Carrinho <i class="fas fa-cart-plus"></i>
-                  </router-link>
+                  </a>
                </div>
             </div>
          </div>
@@ -71,7 +73,7 @@
 </template>
 
 <script>
-import { mapActions, mapState } from 'vuex'
+import { mapActions, mapMutations, mapState } from 'vuex'
 
 export default {
    name: 'Products',
@@ -85,7 +87,8 @@ export default {
    computed: {
       ...mapState({
          company: state => state.companies.companySelected,
-         productsCompany: state => state.companies.productsInCompanySelected
+         productsCompany: state => state.companies.productsInCompanySelected,
+         productsCart: state => state.cart.products
       })
    },
    created () {
@@ -103,6 +106,9 @@ export default {
          'getCategoriesByCompany',
          'getProductsByCompany'
       ]),
+      ...mapMutations({
+         addProductsCart: 'ADD_PRODUCTS_CART'
+      }),
       categoryInFilter (identify) {
          return identify === this.filters.categories ? { background: '#fbd560' } : ''
       },
@@ -124,6 +130,17 @@ export default {
 
          this.getProductsByCompany(params)
             .catch(() => this.$vToastify.error('Falha ao carregar os produtos', 'Erro'))
+      },
+      productInCart (product) {
+         let inCart = false
+
+         this.productsCart.map((prodCart) => {
+            if (prodCart.identify === product.identify) {
+               inCart = true
+            }
+         })
+
+         return inCart
       }
    }
 }
