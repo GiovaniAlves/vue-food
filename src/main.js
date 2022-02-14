@@ -12,3 +12,5 @@ new Vue({
    store,
    render: h => h(DefaultTemplate)
 }).$mount('#app')
+
+store.dispatch('getMe')

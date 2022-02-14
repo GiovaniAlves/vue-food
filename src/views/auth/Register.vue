@@ -9,18 +9,25 @@
                </div>
             </div>
             <div class="d-flex justify-content-center form_container">
-               <form>
+               <form @submit.prevent="registerUser">
+                  <div class="text-danger" v-if="errors.name">
+                     {{ errors.name[0] || '' }}
+                  </div>
                   <div class="input-group">
                      <div class="input-group-append">
                         <span class="input-group-text"><i class="fas fa-user"></i></span>
                      </div>
                      <input
                         v-model="user.name"
+                        :class="['form-control', 'input_user', {'is-invalid': errors.name}]"
                         type="text"
                         name=""
-                        class="form-control input_user"
                         value=""
                         placeholder="Nome">
+                  </div>
+
+                  <div class="text-danger" v-if="errors.email">
+                     {{ errors.email[0] || '' }}
                   </div>
                   <div class="input-group">
                      <div class="input-group-append">
@@ -28,11 +35,15 @@
                      </div>
                      <input
                         v-model="user.email"
+                        :class="['form-control', 'input_user', {'is-invalid': errors.email}]"
                         type="text"
                         name=""
-                        class="form-control input_user"
                         value=""
                         placeholder="E-mail">
+                  </div>
+
+                  <div class="text-danger" v-if="errors.password">
+                     {{ errors.password[0] || '' }}
                   </div>
                   <div class="input-group">
                      <div class="input-group-append">
@@ -40,17 +51,16 @@
                      </div>
                      <input
                         v-model="user.password"
+                        :class="['form-control', 'input_pass', {'is-invalid': errors.password}]"
                         type="password"
                         name=""
-                        class="form-control input_pass"
                         value=""
                         placeholder="Senha">
                   </div>
                   <div class="d-flex justify-content-center login_container">
                      <button
-                        @click="registerUser"
                         :disabled="loading"
-                        type="button"
+                        type="submit"
                         name="button"
                         class="btn login_btn"
                      >
@@ -85,7 +95,12 @@ export default {
             email: '',
             password: ''
          },
-         loading: false
+         loading: false,
+         errors: {
+            name: '',
+            email: '',
+            password: ''
+         }
       }
    },
    methods: {
@@ -93,13 +108,30 @@ export default {
          'register'
       ]),
       registerUser () {
+         this.resetErrors()
          this.loading = true
 
          this.register(this.user)
-            .then(response => console.log(response.data))
-            .catch(() => this.$vToastify.error('Falha ao carregar as empresas', 'Erro'))
+            .then(() => {
+               this.$router.push({ name: 'login' })
+               this.$vToastify.success('Casdastrado com sucesso. Agora faça o login para entrar!', 'Parabéns!')
+            })
+            .catch((error) => {
+              const errorResponse = error.response
+
+               if (errorResponse.status === 422) {
+                  this.errors = Object.assign(this.errors, errorResponse.data.errors)
+               }
+            })
             // eslint-disable-next-line no-return-assign
             .finally(() => this.loading = false)
+      },
+      resetErrors () {
+         this.errors = {
+            name: '',
+            email: '',
+            password: ''
+         }
       }
    }
 }
