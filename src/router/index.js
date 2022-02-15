@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 import Cart from '../views/Cart.vue'
 import Products from '../views/Products.vue'
+import MyOrders from '../views/auth/MyOrders.vue'
 import Login from '../views/auth/Login.vue'
 import Register from '../views/auth/Register.vue'
 
@@ -27,6 +28,11 @@ const routes = [
             path: '/loja/:companyUrl',
             name: 'products',
             component: Products
+         },
+         {
+            path: '/meus-pedidos',
+            name: 'myOrders',
+            component: MyOrders
          }
       ]
    },

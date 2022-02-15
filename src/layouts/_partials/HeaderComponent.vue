@@ -14,12 +14,13 @@
                      </router-link>
                   </li>
                   <li class="nav-item">
-                     <p
+                     <router-link
+                        :to="{name: 'myOrders'}"
                         v-if="me.name"
                         class="nav-link"
                      >
                         Olá {{ me.name }} <span @click.prevent="logout"> (Sair)</span>
-                     </p>
+                     </router-link>
                      <router-link
                         v-else
                         :to="{name: 'login'}"
@@ -27,6 +28,7 @@
                      >
                         Entrar
                      </router-link>
+
                   </li>
                </ul>
             </div>
