@@ -14,5 +14,10 @@ export default {
          }
       })
          .then(response => commit('SET_ORDERS', response.data))
+   },
+
+   // eslint-disable-next-line no-empty-pattern
+   getOrderByIdentify ({}, identify) {
+      return axios.get(`/order/${identify}`)
    }
 }

@@ -4,8 +4,8 @@
          <h1 class="title-tenant">Meus Pedidos</h1>
       </div>
 
-      <div class="my-orders my-4">
-         <div class="my-table-header mb-4">
+      <div class="my-orders my-6">
+         <div class="my-table-header mb-3">
             <div class="text-center"><b>Nª Pedido</b></div>
             <div class="text-center"><b>Data</b></div>
             <div class="text-center"><b>Valor Total</b></div>
@@ -17,7 +17,7 @@
             class="my-table"
          >
             <div class="text-center">{{ order.identify }}</div>
-            <div class="text-center">{{ order.identify }}</div>
+            <div class="text-center">{{ order.date }}</div>
             <div class="text-center">{{ order.total }}</div>
             <div class="text-center"><a href="detalhes-pedido.html" class="btn btn-success">Detalhes</a></div>
          </div>

@@ -5,6 +5,7 @@ import Cart from '../views/Cart.vue'
 import Products from '../views/Products.vue'
 import MyOrders from '../views/auth/MyOrders.vue'
 import Login from '../views/auth/Login.vue'
+import OrderDetail from '../views/OrderDetail.vue'
 import Register from '../views/auth/Register.vue'
 
 Vue.use(VueRouter)
@@ -33,6 +34,12 @@ const routes = [
             path: '/meus-pedidos',
             name: 'myOrders',
             component: MyOrders
+         },
+         {
+            path: '/pedido/:identify',
+            name: 'orderDetail',
+            component: OrderDetail,
+            props: true
          }
       ]
    },
