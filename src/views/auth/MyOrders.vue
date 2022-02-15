@@ -19,7 +19,13 @@
             <div class="text-center">{{ order.identify }}</div>
             <div class="text-center">{{ order.date }}</div>
             <div class="text-center">{{ order.total }}</div>
-            <div class="text-center"><a href="detalhes-pedido.html" class="btn btn-success">Detalhes</a></div>
+            <div class="text-center">
+               <router-link
+                  :to="{ name: 'orderDetail', params: {identify: order.identify}}"
+                  class=" btn btn-success">
+                  Detalhes
+               </router-link>
+            </div>
          </div>
 
       </div>
@@ -33,10 +39,14 @@ export default {
    name: 'MyOrders',
    computed: {
       ...mapState({
-         myOrderes: state => state.orders.myOrders
+         myOrderes: state => state.orders.myOrders,
+         authenticated: state => state.auth.authenticated
       })
    },
    created () {
+      if (!this.authenticated) {
+         return this.$router.push({ name: 'home' })
+      }
       this.getMyOrders()
          .catch(() => this.$vToastify.error('Falha ao carregar os pedidos', 'Erro'))
    },

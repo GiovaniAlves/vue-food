@@ -54,6 +54,27 @@
 
       </div>
       <!-- products order -->
+
+      <!-- Evaluations -->
+      <hr>
+      <button
+         class="btn btn-success"
+         @click="openModalEvaluation">
+         Avaliar o Pedido
+      </button>
+
+      <modal name="evaluation-order" height="280">
+         <div class="px-md-3 py-4 mb-1">
+            <h3 class="text-center">Avaliar o pedido: {{ identify }}</h3>
+            <div class="form-group">
+               <textarea class="form-control" name="comment" cols="50" rows="4" placeholder="Comentário"></textarea>
+            </div>
+            <button class="btn btn-info">
+               Avaliar
+            </button>
+         </div>
+      </modal>
+      <!-- Evaluations -->
    </div>
 </template>
 
@@ -87,7 +108,6 @@ export default {
       }
    },
    created () {
-      console.log(this.identify)
       this.getOrderByIdentify(this.identify)
          .then((response) => {
             this.order = Object.assign(this.order, response.data.data)
@@ -100,7 +120,13 @@ export default {
    methods: {
       ...mapActions([
          'getOrderByIdentify'
-      ])
+      ]),
+      openModalEvaluation () {
+         this.$modal.show('evaluation-order')
+      },
+      hideModalEvaluation () {
+         this.$modal.hide('evaluation-order')
+      }
    }
 }
 </script>
