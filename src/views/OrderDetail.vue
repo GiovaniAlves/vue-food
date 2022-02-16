@@ -15,17 +15,17 @@
          <div class="col-sm-6">
             <ul class="p-0">
                <li v-if="order.table.identify">
-                  <span>Mesa</span>
+                  <span><b>Mesa</b></span>
                   <ul class="p-0">
-                     <li><b>Identificador:</b> {{ order.table.identify }}</li>
-                     <li><b>Descrição:</b> {{ order.table.description }}</li>
+                     <li>Identificador: {{ order.table.identify }}</li>
+                     <li>Descrição: {{ order.table.description }}</li>
                   </ul>
                </li>
                <li v-if="order.client.name">
-                  <span>Cliente</span>
+                  <span><b>Cliente</b></span>
                   <ul class="p-0">
-                     <li><b>Nome:</b> {{ order.client.name }}</li>
-                     <li><b>E-mail:</b> {{ order.client.email }}</li>
+                     <li>Nome: {{ order.client.name }}</li>
+                     <li>E-mail: {{ order.client.email }}</li>
                   </ul>
                </li>
             </ul>
@@ -66,11 +66,34 @@
       <modal name="evaluation-order" height="280">
          <div class="px-md-3 py-4 mb-1">
             <h3 class="text-center">Avaliar o pedido: {{ identify }}</h3>
+            <strong>Nota:</strong>
+            <vue-stars
+               v-model="evaluation.stars"
+               name="demo"
+               :active-color="'#ffdd00'"
+               :inactive-color="'#999999'"
+               :shadow-color="'#ffff00'"
+               :hover-color="'#dddd00'"
+               :max="5"
+               :readonly="false"
+               :char="'★'"
+               :inactive-char="''"
+               :class="''"
+            />
             <div class="form-group">
-               <textarea class="form-control" name="comment" cols="50" rows="4" placeholder="Comentário"></textarea>
+               <textarea
+                  v-model="evaluation.comment"
+                  class="form-control" name="comment"
+                  cols="50"
+                  rows="4"
+                  placeholder="Comentário"></textarea>
             </div>
-            <button class="btn btn-info">
-               Avaliar
+            <button
+               @click="sendEvaluation"
+               :disabled="loadSendEvaluation"
+               class="btn btn-info">
+               <span v-if="loadSendEvaluation">Avaliando...</span>
+               <span v-else>Avaliar</span>
             </button>
          </div>
       </modal>
@@ -103,8 +126,14 @@ export default {
                name: '',
                email: ''
             },
+            evaluations: [],
             products: []
-         }
+         },
+         evaluation: {
+            stars: 1,
+            comment: ''
+         },
+         loadSendEvaluation: false
       }
    },
    created () {
@@ -119,13 +148,35 @@ export default {
    },
    methods: {
       ...mapActions([
-         'getOrderByIdentify'
+         'getOrderByIdentify',
+         'evaluationOrder'
       ]),
-      openModalEvaluation () {
-         this.$modal.show('evaluation-order')
-      },
       hideModalEvaluation () {
          this.$modal.hide('evaluation-order')
+      },
+      sendEvaluation () {
+         this.loadSendEvaluation = true
+         const params = {
+            identify: this.identify,
+            ...this.evaluation
+         }
+
+         this.evaluationOrder(params)
+            .then((response) => {
+               console.log(response.data.data)
+               this.order.evaluations.push(response.data.data)
+               this.$vToastify.success('Avaliação enviada com sucesso', 'Parabéns')
+            })
+            .catch(() => {
+               this.$vToastify.error('Falha ao enviar a avaliação', 'Erro')
+            })
+            .finally(() => {
+               this.loadSendEvaluation = false
+               this.hideModalEvaluation()
+            })
+      },
+      openModalEvaluation () {
+         this.$modal.show('evaluation-order')
       }
    }
 }
