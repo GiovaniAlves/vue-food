@@ -3,7 +3,7 @@ import { TOKEN_NAME } from '@/configs/api'
 
 export default {
    // eslint-disable-next-line no-empty-pattern
-   evaluationOrder ({}, params) {
+   setEvaluationOrder ({}, params) {
       const token = localStorage.getItem(TOKEN_NAME)
 
       // eslint-disable-next-line prefer-promise-reject-errors

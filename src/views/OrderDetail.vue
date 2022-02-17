@@ -58,8 +58,10 @@
       <!-- Evaluations -->
       <hr>
       <button
+         @click="openModalEvaluation"
+         v-if="user.authenticated && user.me.name === order.client.name"
          class="btn btn-success"
-         @click="openModalEvaluation">
+      >
          Avaliar o Pedido
       </button>
 
@@ -97,16 +99,47 @@
             </button>
          </div>
       </modal>
+
+      <div
+         v-if="order.evaluations.length"
+         class="evaluations-order col-12 mt-3"
+      >
+         <hr>
+         <div v-for="(evaluation, index) in order.evaluations" :key="index">
+            <p><strong>Nome: </strong>{{ evaluation.client.name }}</p>
+            <p><strong>Comentário: </strong>{{ evaluation.comment }}</p>
+            <strong>Nota: </strong>
+            <vue-stars
+               :value="evaluation.stars"
+               name="evaluation-user"
+               :active-color="'#ffdd00'"
+               :inactive-color="'#999999'"
+               :shadow-color="'#ffff00'"
+               :hover-color="'#dddd00'"
+               :max="5"
+               :readonly="true"
+               :char="'★'"
+               :inactive-char="''"
+               :class="''"
+            />
+            <hr>
+         </div>
+      </div>
       <!-- Evaluations -->
    </div>
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapActions, mapState } from 'vuex'
 
 export default {
    name: 'DetailOrder',
    props: ['identify'],
+   computed: {
+      ...mapState({
+         user: state => state.auth
+      })
+   },
    data () {
       return {
          order: {
@@ -149,7 +182,7 @@ export default {
    methods: {
       ...mapActions([
          'getOrderByIdentify',
-         'evaluationOrder'
+         'setEvaluationOrder'
       ]),
       hideModalEvaluation () {
          this.$modal.hide('evaluation-order')
@@ -161,7 +194,7 @@ export default {
             ...this.evaluation
          }
 
-         this.evaluationOrder(params)
+         this.setEvaluationOrder(params)
             .then((response) => {
                console.log(response.data.data)
                this.order.evaluations.push(response.data.data)
