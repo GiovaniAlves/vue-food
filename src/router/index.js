@@ -7,6 +7,7 @@ import MyOrders from '../views/auth/MyOrders.vue'
 import Login from '../views/auth/Login.vue'
 import OrderDetail from '../views/OrderDetail.vue'
 import Register from '../views/auth/Register.vue'
+import Page404 from '../views/Page404.vue'
 
 Vue.use(VueRouter)
 
@@ -79,6 +80,13 @@ const routes = [
             }
          }
       ]
+   },
+   {
+      path: '*',
+      component: Page404,
+      meta: {
+         title: 'Página não Encontrada'
+      }
    }
 ]
 
