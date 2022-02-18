@@ -19,5 +19,23 @@ export default {
    // eslint-disable-next-line no-empty-pattern
    getOrderByIdentify ({}, identify) {
       return axios.get(`/order/${identify}`)
+   },
+
+   async createOrderAnonymously ({ commit }, params) {
+      const response = await axios.post('/order', params)
+      commit('CLEAR_CART')
+      return response.data.data
+   },
+
+   async createOrderAuthenticated ({ commit }, params) {
+      const token = localStorage.getItem(TOKEN_NAME)
+
+      const response = await axios.post('/auth/order', params, {
+         headers: {
+            Authorization: `Bearer ${token}`
+         }
+      })
+      commit('CLEAR_CART')
+      return response.data.data
    }
 }

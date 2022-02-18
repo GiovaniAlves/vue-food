@@ -18,28 +18,43 @@ const routes = [
          {
             path: '/',
             name: 'home',
-            component: Home
+            component: Home,
+            meta: {
+               title: 'Home'
+            }
          },
          {
             path: '/carrinho',
             name: 'cart',
-            component: Cart
+            component: Cart,
+            meta: {
+               title: 'Carrinho de Compras'
+            }
          },
          {
             path: '/loja/:companyUrl',
             name: 'products',
-            component: Products
+            component: Products,
+            meta: {
+               title: 'Loja'
+            }
          },
          {
             path: '/meus-pedidos',
             name: 'myOrders',
-            component: MyOrders
+            component: MyOrders,
+            meta: {
+               title: 'Meus Pedidos'
+            }
          },
          {
             path: '/pedido/:identify',
             name: 'orderDetail',
             component: OrderDetail,
-            props: true
+            props: true,
+            meta: {
+               title: 'Detalhes do Pedido'
+            }
          }
       ]
    },
@@ -50,12 +65,18 @@ const routes = [
          {
             path: '/login',
             name: 'login',
-            component: Login
+            component: Login,
+            meta: {
+               title: 'Login - VueFood'
+            }
          },
          {
             path: '/registro',
             name: 'register',
-            component: Register
+            component: Register,
+            meta: {
+               title: 'Registro - VueFood'
+            }
          }
       ]
    }
@@ -65,6 +86,16 @@ const router = new VueRouter({
    mode: 'history',
    base: process.env.BASE_URL,
    routes
+})
+
+router.beforeEach((to, from, next) => {
+   document.title = 'VueFood'
+
+   // eslint-disable-next-line no-prototype-builtins
+   if (to.hasOwnProperty('meta')) {
+      document.title = to.meta.title
+   }
+   next()
 })
 
 export default router
