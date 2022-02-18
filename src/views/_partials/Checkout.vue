@@ -20,7 +20,7 @@
                   class="col-md-12"
                >
                   <p><strong>Total de produtos: </strong>{{ cartProducts.length }}</p>
-                  <p><strong>Preço Total: </strong>{{ totalCart }}</p>
+                  <p><strong>Preço Total: </strong>{{ formatPrice(totalCart) }}</p>
                   <div class="form-group">
                      <textarea v-model="comment" name="comment" class="form-control" cols="30" rows="2"></textarea>
                   </div>
@@ -39,7 +39,7 @@
                   class="col-md-12"
                >
                   <p><strong>Total de produtos: </strong>{{ cartProducts.length }}</p>
-                  <p><strong>Preço Total: </strong>{{ totalCart }}</p>
+                  <p><strong>Preço Total: </strong>{{ formatPrice(totalCart) }}</p>
                   <div class="form-group">
                      <textarea v-model="comment" name="comment" class="form-control" cols="30" rows="3"></textarea>
                   </div>
@@ -61,6 +61,7 @@
 
 <script>
 import { mapState } from 'vuex'
+import formatPriceMixin from '@/mixins/format-price'
 
 export default {
    name: 'Checkout',
@@ -86,6 +87,7 @@ export default {
          return total
       }
    },
+   mixins: [formatPriceMixin],
    methods: {
       async createOrder () {
          if (this.cartProducts.length === 0) {

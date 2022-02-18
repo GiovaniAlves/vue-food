@@ -4,7 +4,7 @@
          <h1 class="title-tenant">Meus Pedidos</h1>
       </div>
 
-      <div class="my-orders my-6">
+      <div class="my-orders my-6 mb-5">
          <div class="my-table-header mb-3">
             <div class="text-center"><b>Nª Pedido</b></div>
             <div class="text-center"><b>Data</b></div>
@@ -18,7 +18,7 @@
          >
             <div class="text-center">{{ order.identify }}</div>
             <div class="text-center">{{ order.date }}</div>
-            <div class="text-center">{{ order.total }}</div>
+            <div class="text-center">{{ formatPrice(order.total) }}</div>
             <div class="text-center">
                <router-link
                   :to="{ name: 'orderDetail', params: {identify: order.identify}}"
@@ -34,6 +34,7 @@
 
 <script>
 import { mapActions, mapState } from 'vuex'
+import formatPriceMixin from '@/mixins/format-price'
 
 export default {
    name: 'MyOrders',
@@ -43,6 +44,9 @@ export default {
          authenticated: state => state.auth.authenticated
       })
    },
+   mixins: [
+      formatPriceMixin
+   ],
    created () {
       if (!this.authenticated) {
          return this.$router.push({ name: 'home' })

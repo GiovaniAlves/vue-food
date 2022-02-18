@@ -7,7 +7,7 @@
          <div class="col-sm-6">
             <ul class="p-0">
                <li><b>Número:</b> {{ order.identify }}</li>
-               <li><b>Total:</b> R$ {{ order.total }}</li>
+               <li><b>Total:</b> {{ formatPrice(order.total) }}</li>
                <li><b>Data:</b> {{ order.date }}</li>
                <li><b>Status:</b> <span class="badge bg-success text-light p-2">{{ order.status }}</span></li>
             </ul>
@@ -47,7 +47,7 @@
                <img class="card-img-top" :src="product.image" :alt="product.name">
                <div class="details-card-body">
                   <h5>{{ product.title }}</h5>
-                  <p><b>R$ {{ product.price }}</b></p>
+                  <p><b>{{ formatPrice(product.price) }}</b></p>
                </div>
             </div>
          </div>
@@ -131,6 +131,7 @@
 
 <script>
 import { mapActions, mapState } from 'vuex'
+import formatPriceMixin from '@/mixins/format-price'
 
 export default {
    name: 'DetailOrder',
@@ -140,6 +141,9 @@ export default {
          user: state => state.auth
       })
    },
+   mixins: [
+      formatPriceMixin
+   ],
    data () {
       return {
          order: {
